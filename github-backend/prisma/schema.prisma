@@ -13,6 +13,8 @@ model User {
   username  String
   token     String
   favorites Favorite[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Repository {
@@ -23,6 +25,8 @@ model Repository {
   stars       Int
   url         String
   favorites   Favorite[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Favorite {
@@ -31,4 +35,5 @@ model Favorite {
   userId       String
   repository   Repository @relation(fields: [repositoryId], references: [id])
   repositoryId String
+  createdAt    DateTime   @default(now())
 }
