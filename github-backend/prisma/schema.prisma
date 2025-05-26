@@ -19,7 +19,7 @@ model User {
 
 model Repository {
   id          String   @id @default(uuid())
-  githubId    String
+  githubId    String   @unique
   name        String
   description String?
   stars       Int
@@ -28,6 +28,7 @@ model Repository {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
 
 model Favorite {
   id           String     @id @default(uuid())

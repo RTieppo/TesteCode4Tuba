@@ -106,7 +106,6 @@ router.post("/repos/favorite", authenticate, async (req, res) => {
         res.status(500).json({ error: "Erro ao favoritar repositório." });
     }
 });
-
 router.get("/repos", async (req, res) => {
     const { user, page = 1, sort = "desc" } = req.query;
 
@@ -115,14 +114,32 @@ router.get("/repos", async (req, res) => {
     }
 
     const perPage = 10;
+    const pageInt = parseInt(page, 10);
+    const offset = (pageInt - 1) * perPage;
     const sortOrder = sort === "asc" ? "asc" : "desc";
 
     try {
-        // Busca repositórios do GitHub diretamente
+        // 1. Verifica se temos repositórios salvos para esse user
+        const reposFromDb = await prisma.repository.findMany({
+            where: {
+                url: { contains: `github.com/${user}/` },
+            },
+            orderBy: {
+                stars: sortOrder,
+            },
+            skip: offset,
+            take: perPage,
+        });
+
+        // 2. Se tiver, retorna do banco
+        if (reposFromDb.length > 0) {
+            return res.json(reposFromDb);
+        }
+
+        // 3. Se não, busca do GitHub
         const response = await axios.get(`https://api.github.com/users/${user}/repos`, {
             params: {
-                per_page: perPage,
-                page,
+                per_page: 100, // traz tudo de uma vez para salvar local
                 sort: "stars",
                 direction: sortOrder,
             },
@@ -131,7 +148,7 @@ router.get("/repos", async (req, res) => {
             },
         });
 
-        const repos = response.data.map(repo => ({
+        const allRepos = response.data.map(repo => ({
             githubId: String(repo.id),
             name: repo.name,
             description: repo.description,
@@ -139,7 +156,27 @@ router.get("/repos", async (req, res) => {
             url: repo.html_url,
         }));
 
-        res.json(repos);
+        // 4. Salva no banco se ainda não existir
+        for (const repo of allRepos) {
+            const exists = await prisma.repository.findUnique({
+                where: { githubId: repo.githubId },
+            });
+
+            if (!exists) {
+                await prisma.repository.create({
+                    data: repo,
+                });
+            }
+        }
+
+        // 5. Retorna os itens paginados da lista total
+        const paginated = allRepos
+            .sort((a, b) =>
+                sortOrder === "asc" ? a.stars - b.stars : b.stars - a.stars
+            )
+            .slice(offset, offset + perPage);
+
+        res.json(paginated);
     } catch (err) {
         console.error(err.response?.data || err.message);
 
@@ -147,8 +184,11 @@ router.get("/repos", async (req, res) => {
             return res.status(404).json({ error: "Usuário não encontrado." });
         }
 
+        console.error("Erro completo:", err);
+        console.error("Resposta do GitHub:", err.response?.data || err.message);
         res.status(500).json({ error: "Erro ao buscar repositórios do GitHub." });
     }
 });
+
 
 export default router;
