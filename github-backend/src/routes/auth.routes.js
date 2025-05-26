@@ -107,4 +107,48 @@ router.post("/repos/favorite", authenticate, async (req, res) => {
     }
 });
 
+router.get("/repos", async (req, res) => {
+    const { user, page = 1, sort = "desc" } = req.query;
+
+    if (!user) {
+        return res.status(400).json({ error: "Parâmetro 'user' é obrigatório." });
+    }
+
+    const perPage = 10;
+    const sortOrder = sort === "asc" ? "asc" : "desc";
+
+    try {
+        // Busca repositórios do GitHub diretamente
+        const response = await axios.get(`https://api.github.com/users/${user}/repos`, {
+            params: {
+                per_page: perPage,
+                page,
+                sort: "stars",
+                direction: sortOrder,
+            },
+            headers: {
+                Accept: "application/vnd.github.v3+json",
+            },
+        });
+
+        const repos = response.data.map(repo => ({
+            githubId: String(repo.id),
+            name: repo.name,
+            description: repo.description,
+            stars: repo.stargazers_count,
+            url: repo.html_url,
+        }));
+
+        res.json(repos);
+    } catch (err) {
+        console.error(err.response?.data || err.message);
+
+        if (err.response?.status === 404) {
+            return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+
+        res.status(500).json({ error: "Erro ao buscar repositórios do GitHub." });
+    }
+});
+
 export default router;
