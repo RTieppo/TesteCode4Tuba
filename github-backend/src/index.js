@@ -9,8 +9,9 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(cors());
+app.use(express.json()); 
+
 app.use(authRoutes);
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API funcionando!");
