@@ -1,20 +1,39 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+
 import authRoutes from "./routes/auth.routes.js";
+import repoRoutes from "./routes/repo.routes.js";
+import webhookRoutes from "./routes/webhook.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 dotenv.config();
 const app = express();
-const prisma = new PrismaClient();
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 60,
+  message: { error: "Muitas requisições. Tente novamente em instantes." },
+});
+
 
 app.use(cors());
-app.use(express.json()); 
+app.use(helmet());
+app.use(express.json({ type: "application/json" }));
+app.use(limiter); 
+
 
 app.use(authRoutes);
+app.use(repoRoutes);
+app.use(webhookRoutes);
+
+app.use(errorHandler);
+
 
 app.get("/", (req, res) => {
-  res.send("API funcionando!");
+  res.send("API funcionando.");
 });
 
 const PORT = process.env.PORT || 5000;
