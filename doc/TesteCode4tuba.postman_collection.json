@@ -1,0 +1,608 @@
+{
+	"info": {
+		"_postman_id": "6902be61-2d38-4bcf-ba27-a36d52c2deea",
+		"name": "TesteCode4tuba",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37710624",
+		"_collection_link": "https://www.postman.com/fullsolver/workspace/apitestecode4tuba/collection/37710624-6902be61-2d38-4bcf-ba27-a36d52c2deea?action=share&source=collection_link&creator=37710624"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "Redireciona para o login com GitHub.",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}auth/github",
+							"host": [
+								"{{url_base}}auth"
+							],
+							"path": [
+								"github"
+							]
+						},
+						"description": "Acesse no navegador. Será redirecionado para o GitHub"
+					},
+					"response": [
+						{
+							"name": "Redireciona para o login com GitHub.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/auth/github",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"auth",
+										"github"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\"token\":\"etedyJhbGciOiJIUgdfzI1NiIsInR5sddsdscCI6IkpXVCJ9.eyJ1c2VySWQiOisfsthI5MjdiZDA1222Yy0fggh5NzcwLTRlYTktOWM0Zi00OTliNDg0ODQwNzIiLCJ1c2VybmFtZSI6IlJUaWVsdsdsdwcG8iLCJpYXQiOjE3NDg1NDYxNjQsImV4cCI6MTc0OTE1MDk2NH0.GhDh8Gqdd1Y6zv7JPdo6T_av7v40wshsdsdsdqd4463qqfrHCçrzctEeKYn2_b8o\"}"
+						}
+					]
+				},
+				{
+					"name": "Callback do GitHub OAuth. Recebe o code e troca por o token e JWT",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}auth/callback?code=XXX",
+							"host": [
+								"{{url_base}}auth"
+							],
+							"path": [
+								"callback"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "XXX"
+								}
+							]
+						},
+						"description": "O frontend trata esse retorno, mas você pode simular acessando no navegador manualmente."
+					},
+					"response": []
+				}
+			],
+			"description": "Esta pasta contém as rotas responsáveis por iniciar e concluir o processo de login via GitHub OAuth. Ao autenticar, o backend troca o código de autorização do GitHub por um token de acesso e gera um JWT para autenticação das demais rotas da API."
+		},
+		{
+			"name": "Repositórios Públicos",
+			"item": [
+				{
+					"name": "Repositórios públicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}repos?user=octocat&page=1&sort=desc",
+							"host": [
+								"{{url_base}}repos"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "octocat",
+									"description": " nome do usuário GitHub (obrigatório)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": " número da página (opcional, default: 1)"
+								},
+								{
+									"key": "sort",
+									"value": "desc",
+									"description": "asc ou desc para ordenação por estrelas"
+								}
+							]
+						},
+						"description": "Busca repositórios públicos do usuário."
+					},
+					"response": [
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/auth/github",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"auth",
+										"github"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "[\r\n    {\r\n        \"githubId\": \"1300192\",\r\n        \"name\": \"Spoon-Knife\",\r\n        \"description\": \"This repo is for demonstration purposes only.\",\r\n        \"stars\": 13033,\r\n        \"url\": \"https://github.com/octocat/Spoon-Knife\"\r\n    },\r\n    {\r\n        \"githubId\": \"1296269\",\r\n        \"name\": \"Hello-World\",\r\n        \"description\": \"My first repository on GitHub!\",\r\n        \"stars\": 2960,\r\n        \"url\": \"https://github.com/octocat/Hello-World\"\r\n    },\r\n    {\r\n        \"githubId\": \"17881631\",\r\n        \"name\": \"octocat.github.io\",\r\n        \"description\": null,\r\n        \"stars\": 835,\r\n        \"url\": \"https://github.com/octocat/octocat.github.io\"\r\n    },\r\n    {\r\n        \"githubId\": \"20978623\",\r\n        \"name\": \"hello-worId\",\r\n        \"description\": \"My first repository on GitHub.\",\r\n        \"stars\": 558,\r\n        \"url\": \"https://github.com/octocat/hello-worId\"\r\n    },\r\n    {\r\n        \"githubId\": \"64778136\",\r\n        \"name\": \"linguist\",\r\n        \"description\": \"Language Savant. If your repository's language is being reported incorrectly, send us a pull request!\",\r\n        \"stars\": 549,\r\n        \"url\": \"https://github.com/octocat/linguist\"\r\n    },\r\n    {\r\n        \"githubId\": \"18221276\",\r\n        \"name\": \"git-consortium\",\r\n        \"description\": \"This repo is for demonstration purposes only.\",\r\n        \"stars\": 433,\r\n        \"url\": \"https://github.com/octocat/git-consortium\"\r\n    },\r\n    {\r\n        \"githubId\": \"132935648\",\r\n        \"name\": \"boysenberry-repo-1\",\r\n        \"description\": \"Testing\",\r\n        \"stars\": 333,\r\n        \"url\": \"https://github.com/octocat/boysenberry-repo-1\"\r\n    },\r\n    {\r\n        \"githubId\": \"56271164\",\r\n        \"name\": \"test-repo1\",\r\n        \"description\": null,\r\n        \"stars\": 328,\r\n        \"url\": \"https://github.com/octocat/test-repo1\"\r\n    }\r\n]"
+						},
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url_base}}auth/github",
+									"host": [
+										"{{url_base}}auth"
+									],
+									"path": [
+										"github"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": \"Erro ao buscar repositórios.\"\r\n}"
+						}
+					]
+				}
+			],
+			"description": "Rotas abertas que permitem buscar repositórios públicos de qualquer usuário do GitHub. Inclui suporte a paginação e ordenação por número de estrelas. Ideal para navegação e exibição no frontend sem exigir autenticação."
+		},
+		{
+			"name": "Gerenciar Repositórios do Usuário",
+			"item": [
+				{
+					"name": "Cria um repositório",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"teste-descripion\",\r\n  \"description\": \"repositório criado via API\",\r\n  \"privateRepo\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}repos",
+							"host": [
+								"{{url_base}}repos"
+							]
+						},
+						"description": "Cria um repositório na conta do usuário autenticado."
+					},
+					"response": [
+						{
+							"name": "Cria um repositório",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/repos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"repos"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": \"Token inválido ou expirado.\"\r\n}"
+						},
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"teste-descripion\",\r\n  \"description\": \"repositório criado via API\",\r\n  \"privateRepo\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url_base}}repos",
+									"host": [
+										"{{url_base}}repos"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"message\": \"Repositório criado com sucesso.\",\r\n    \"url\": \"https://github.com/RTieppo/teste-descripion\"\r\n}"
+						}
+					]
+				}
+			],
+			"description": "Rotas que permitem ao usuário autenticado criar novos repositórios diretamente na sua conta do GitHub via API. Essas operações exigem token de acesso válido e são protegidas por autenticação JWT."
+		},
+		{
+			"name": "Favoritos",
+			"item": [
+				{
+					"name": "Lista os repositórios favoritados",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}repos/favorites",
+							"host": [
+								"{{url_base}}repos"
+							],
+							"path": [
+								"favorites"
+							]
+						},
+						"description": "Lista todos os repositórios favoritados pelo usuário autenticado."
+					},
+					"response": [
+						{
+							"name": "Error JWT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/repos/favorites",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"repos",
+										"favorites"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": \"Token não fornecido.\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Adiciona um repositório",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"githubId\": \"1300192\",\r\n    \"name\": \"Spoon-Knife\",\r\n    \"description\": \"This repo is for demonstration purposes only.\",\r\n    \"stars\": 13033,\r\n    \"url\": \"https://github.com/octocat/Spoon-Knife\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base}}repos/favorite",
+							"host": [
+								"{{url_base}}repos"
+							],
+							"path": [
+								"favorite"
+							]
+						},
+						"description": "Adiciona um repositório aos favoritos do usuário autenticado."
+					},
+					"response": [
+						{
+							"name": "Successful response",
+							"originalRequest": {
+								"method": "GET",
+								"header": []
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"message\": \"Favorito adicionado com sucesso.\"\r\n}"
+						},
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": []
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": \"Campos obrigatórios ausentes.\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Remove um repositório",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}repos/favorite/1300192452515154500000000000000121541",
+							"host": [
+								"{{url_base}}repos"
+							],
+							"path": [
+								"favorite",
+								"1300192452515154500000000000000121541"
+							]
+						},
+						"description": "Remove um repositório dos favoritos do usuário autenticado"
+					},
+					"response": [
+						{
+							"name": "Erro JWT",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/repos/favorite/12345678",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"repos",
+										"favorite",
+										"12345678"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": \"Token não fornecido.\"\r\n}"
+						},
+						{
+							"name": "Successful response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url_base}}repos/favorite/12345678",
+									"host": [
+										"{{url_base}}repos"
+									],
+									"path": [
+										"favorite",
+										"12345678"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Conjunto de rotas para o usuário marcar ou desmarcar repositórios como favoritos. Os dados são persistidos no banco de dados local e protegidos por autenticação. Também inclui uma rota para listar todos os favoritos do usuário."
+		},
+		{
+			"name": "Favoritos do GitHub (somente leitura)",
+			"item": [
+				{
+					"name": "Lista os repositórios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base}}github/favorites",
+							"host": [
+								"{{url_base}}github"
+							],
+							"path": [
+								"favorites"
+							]
+						},
+						"description": "Lista os repositórios que o usuário autenticado deu \"estrela\" diretamente no GitHub."
+					},
+					"response": [
+						{
+							"name": "Successful response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/github/favorites",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"github",
+										"favorites"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "[\r\n    {\r\n        \"githubId\": \"277284717\",\r\n        \"name\": \"event-calendar\",\r\n        \"description\": \"Django-based Event Calendar application.\",\r\n        \"stars\": 259,\r\n        \"url\": \"https://github.com/sajib1066/event-calendar\"\r\n    },\r\n    {\r\n        \"githubId\": \"752441713\",\r\n        \"name\": \"sge\",\r\n        \"description\": \"Sistema de Gestão de Estoque (SGE)\",\r\n        \"stars\": 74,\r\n        \"url\": \"https://github.com/pycodebr/sge\"\r\n    },\r\n    {\r\n        \"githubId\": \"631400357\",\r\n        \"name\": \"boiii-free\",\r\n        \"description\": \"Ezz!!!\",\r\n        \"stars\": 229,\r\n        \"url\": \"https://github.com/Ezz-lol/boiii-free\"\r\n    },\r\n    {\r\n        \"githubId\": \"596024291\",\r\n        \"name\": \"Unreal5FPSSurvival\",\r\n        \"description\": \"Unreal5FPSSurvival\",\r\n        \"stars\": 11,\r\n        \"url\": \"https://github.com/dfilitto/Unreal5FPSSurvival\"\r\n    },\r\n    {\r\n        \"githubId\": \"533994378\",\r\n        \"name\": \"t7patch\",\r\n        \"description\": \"A new and improved community patch for BO3. \",\r\n        \"stars\": 638,\r\n        \"url\": \"https://github.com/shiversoftdev/t7patch\"\r\n    },\r\n    {\r\n        \"githubId\": \"233472199\",\r\n        \"name\": \"Microsoft-Activation-Scripts\",\r\n        \"description\": \"Open-source Windows and Office activator featuring HWID, Ohook, TSforge, KMS38, and Online KMS activation methods, along with advanced troubleshooting.\",\r\n        \"stars\": 136538,\r\n        \"url\": \"https://github.com/massgravel/Microsoft-Activation-Scripts\"\r\n    },\r\n    {\r\n        \"githubId\": \"250518389\",\r\n        \"name\": \"git-github\",\r\n        \"description\": \"Material do Curso de Git e GitHub\",\r\n        \"stars\": 2713,\r\n        \"url\": \"https://github.com/gustavoguanabara/git-github\"\r\n    },\r\n    {\r\n        \"githubId\": \"246902076\",\r\n        \"name\": \"javascript\",\r\n        \"description\": \"Curso de JavaScript\",\r\n        \"stars\": 3801,\r\n        \"url\": \"https://github.com/gustavoguanabara/javascript\"\r\n    },\r\n    {\r\n        \"githubId\": \"260058495\",\r\n        \"name\": \"projeto-site\",\r\n        \"description\": \"Projeto de um site criado durante o curso de Git e GitHub\",\r\n        \"stars\": 859,\r\n        \"url\": \"https://github.com/gustavoguanabara/projeto-site\"\r\n    },\r\n    {\r\n        \"githubId\": \"595193619\",\r\n        \"name\": \"php-moderno\",\r\n        \"description\": \"Repositório para o Curso de PHP moderno, disponível no Curso em Vídeo\",\r\n        \"stars\": 496,\r\n        \"url\": \"https://github.com/gustavoguanabara/php-moderno\"\r\n    },\r\n    {\r\n        \"githubId\": \"246128823\",\r\n        \"name\": \"html-css\",\r\n        \"description\": \"Curso de HTML5 e CSS3\",\r\n        \"stars\": 14923,\r\n        \"url\": \"https://github.com/gustavoguanabara/html-css\"\r\n    }\r\n]"
+						},
+						{
+							"name": "Lista os repositórios",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url_base}}github/favorites",
+									"host": [
+										"{{url_base}}github"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": \"Token inválido ou expirado.\"\r\n}"
+						}
+					]
+				}
+			],
+			"description": "Esta rota busca os repositórios que o usuário autenticado marcou com estrela diretamente na interface do GitHub. Os dados são obtidos em tempo real através da API do GitHub. Serve como recurso auxiliar ou informativo, sem gravação no banco."
+		},
+		{
+			"name": "Webhook GitHub",
+			"item": [
+				{
+					"name": "Receber eventos de criação",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-GitHub-Event",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_base}}webhook/github",
+							"host": [
+								"{{url_base}}webhook"
+							],
+							"path": [
+								"github"
+							]
+						},
+						"description": "Endpoint para receber eventos de criação de repositórios do GitHub."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint utilizado para integrar eventos automáticos do GitHub, como a criação de um novo repositório. Quando um evento é enviado, o backend registra automaticamente o novo repositório no banco de dados. Requer configuração do webhook na interface de administração do repositório no GitHub."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url_base",
+			"value": "http://localhost:5000/",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

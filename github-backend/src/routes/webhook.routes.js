@@ -1,3 +1,6 @@
+import { Router } from "express";
+const router = Router();
+
 router.post("/webhook/github", async (req, res) => {
     const event = req.headers["x-github-event"];
     const signature = req.headers["x-hub-signature-256"];
@@ -36,3 +39,5 @@ router.post("/webhook/github", async (req, res) => {
 
     res.status(200).json({ message: "Webhook processado" });
 });
+
+export default router;
