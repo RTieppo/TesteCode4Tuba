@@ -109,7 +109,7 @@ Postman → Environments → New Environment → `base_url`, `jwt_token`
 
 Você pode importar a coleção de testes da API diretamente no Postman:
 
-- [Clique aqui para baixar a coleção Postman](./docs/TesteCode4tuba.postman_collection.json)
+- [Clique aqui para baixar a coleção Postman](./doc/TesteCode4tuba.postman_collection.json)
 
 No Postman:
 1. Vá em `File > Import`
